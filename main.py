@@ -20,11 +20,11 @@ def main():
         print_board(board)
 
         next_board = get_next_board(board)
-        while next_board != None:
+        while next_board is not None:
             board = next_board
             print_board(board)
             next_board = get_next_board(board)
-            
+
         conflict_len = len(get_conflict(board))
         if conflict_len == 0:
             find_correct_board = True
@@ -59,7 +59,7 @@ def get_next_board(board):
                     min_conflict_board = [i[:] for i in tmp_board]
                 row += direct[0]
                 col += direct[1]
-    
+
     return min_conflict_board if has_smaller else None
 
 
@@ -70,9 +70,6 @@ def get_board():
     for i, element in enumerate(queens_pos):
         board[i][element] = 1
     return board, None
-    #for i in queens_pos[:n]:
-    #    board[i[0]][i[1]] = 1
-    #return board, queens_pos[:n]
 
 
 def get_conflict(board, queens_pos=None):
@@ -81,10 +78,16 @@ def get_conflict(board, queens_pos=None):
 
     chk_ary = [[0 for i in range(n)] for j in range(n)]
     conflict_pos = []
-    for i in queens_pos:
-        if is_conflict(i, board):
-            chk_ary[i[0]][i[1]] = 1
-            conflict_pos.append(i)
+    for ind, pos_i in enumerate(queens_pos[:-1]):
+        for pos_j in queens_pos[ind + 1:]:
+            row = abs(pos_i[0] - pos_j[0])
+            col = abs(pos_i[1] - pos_j[1])
+            if row == 0 and col == 0:
+                continue
+            if row == 0 or col == 0 or row == col:
+                chk_ary[pos_i[0]][pos_i[1]] = 1
+                chk_ary[pos_j[0]][pos_j[1]] = 1
+    conflict_pos = get_queens_pos(chk_ary)
     return conflict_pos
 
 
@@ -128,7 +131,7 @@ def print_board(board):
 if __name__ == '__main__':
     directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
                   [-1, 1], [1, 1], [-1, -1], [1, -1]]
-    
+
     n = 20  # n queens
     sleep_time = 0
     debug_print = True
