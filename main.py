@@ -43,8 +43,7 @@ def get_next_board(board):
     has_smaller = False
     min_conflict_board = board
     min_conflict_num = len(conflict_pos)
-    directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
-                  [-1, 1], [1, 1], [-1, -1], [1, -1]]
+    directions = [[0, 1], [0, -1]]
     for pos in queens_pos:
         for direct in directions:
             row = pos[0] + direct[0]
@@ -66,11 +65,14 @@ def get_next_board(board):
 
 def get_board():
     board = [[0 for i in range(n)] for j in range(n)]
-    queens_pos = [[i, j] for j in range(n) for i in range(n)]
+    queens_pos = [i for i in range(n)]
     random.shuffle(queens_pos)
-    for i in queens_pos[:n]:
-        board[i[0]][i[1]] = 1
-    return board, queens_pos[:n]
+    for i, element in enumerate(queens_pos):
+        board[i][element] = 1
+    return board, None
+    #for i in queens_pos[:n]:
+    #    board[i[0]][i[1]] = 1
+    #return board, queens_pos[:n]
 
 
 def get_conflict(board, queens_pos=None):
@@ -87,8 +89,6 @@ def get_conflict(board, queens_pos=None):
 
 
 def is_conflict(pos, board):
-    directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
-                  [-1, 1], [1, 1], [-1, -1], [1, -1]]
     for direct in directions:
         row = pos[0] + direct[0]
         col = pos[1] + direct[1]
@@ -126,7 +126,10 @@ def print_board(board):
 
 
 if __name__ == '__main__':
-    n = 10  # n queens
+    directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
+                  [-1, 1], [1, 1], [-1, -1], [1, -1]]
+    
+    n = 20  # n queens
     sleep_time = 0
-    debug_print = False
+    debug_print = True
     main()
