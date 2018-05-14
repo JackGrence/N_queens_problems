@@ -47,22 +47,15 @@ def get_next_board(board):
     has_smaller = False
     min_conflict_board = board
     min_conflict_num = len(conflict_pos)
-    directions = [[0, 1], [0, -1]]
-    for pos in queens_pos:
-        for direct in directions:
-            row = pos[0] + direct[0]
-            col = pos[1] + direct[1]
-            while row >= 0 and row < n and col >= 0 and col < n:
-                tmp_board = [i[:] for i in board]
-                tmp_board[pos[0]][pos[1]], tmp_board[row][col] = \
-                    tmp_board[row][col], tmp_board[pos[0]][pos[1]]
-                conflict_pos = get_conflict(tmp_board)
-                if len(conflict_pos) < min_conflict_num:
-                    has_smaller = True
-                    min_conflict_num = len(conflict_pos)
-                    min_conflict_board = [i[:] for i in tmp_board]
-                row += direct[0]
-                col += direct[1]
+    for i in range(n):
+        for j in range(i + 1, n):
+            tmp_board = [i[:] for i in board]
+            tmp_board[i], tmp_board[j] = tmp_board[j], tmp_board[i]
+            conflict_pos = get_conflict(tmp_board)
+            if len(conflict_pos) < min_conflict_num:
+                has_smaller = True
+                min_conflict_num = len(conflict_pos)
+                min_conflict_board = [i[:] for i in tmp_board]
 
     return min_conflict_board if has_smaller else None
 
@@ -120,7 +113,6 @@ def print_board(board):
     if not debug_print:
         return
     time.sleep(sleep_time)
-    print('-' * 50)
     print_str = ''
     for i in board:
         for j in i:
