@@ -14,6 +14,7 @@ class bcolors:
 
 
 def main():
+    global restart_time
     find_correct_board = False
     while not find_correct_board:
         board, queens_pos = get_board()
@@ -28,10 +29,13 @@ def main():
         conflict_len = len(get_conflict(board))
         if conflict_len == 0:
             find_correct_board = True
+            break
+        restart_time += 1
 
     global debug_print
     debug_print = True
     print_board(board)
+    print("restart:", restart_time)
 
 
 def get_next_board(board):
@@ -135,4 +139,5 @@ if __name__ == '__main__':
     n = 20  # n queens
     sleep_time = 0
     debug_print = True
+    restart_time = 0
     main()
